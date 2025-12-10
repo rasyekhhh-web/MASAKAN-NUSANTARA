@@ -1,0 +1,417 @@
+<style>
+    * {margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif;}
+
+    body {
+        background: linear-gradient(135deg, #f3e7ff, #e0f3ff);
+        padding: 20px;
+        color: #333;
+    }
+
+    header {
+        background: linear-gradient(135deg, #6a00ff, #ff00c8);
+        padding: 25px;
+        text-align: center;
+        color: white;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        font-size: 28px;
+        font-weight: bold;
+        box-shadow: 0px 5px 15px rgba(0,0,0,0.15);
+    }
+
+    .container {max-width: 1200px; margin: auto;}
+
+    .search-box, .region-dropdown {
+        padding: 12px 15px;
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #b38dff;
+        margin-bottom: 15px;
+        background: white;
+        font-size: 15px;
+    }
+
+    .search-box:focus, .region-dropdown:focus {
+        border-color: #9d4dff;
+        box-shadow: 0 0 6px #c59aff;
+        outline: none;
+    }
+
+    .masakan-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .masakan-item {
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 12px rgba(100, 0, 200, 0.18);
+        cursor: pointer;
+        transition: 0.25s ease;
+        border: 2px solid #e2c9ff;
+    }
+
+    .masakan-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 10px 20px rgba(100,0,200,0.25);
+        border-color: #bd7aff;
+    }
+
+    .masakan-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .detail {
+        display: none;
+        margin-top: 12px;
+        padding: 12px;
+        background: #fce8ff;
+        border-left: 4px solid #d200ff;
+        border-radius: 8px;
+        animation: fadeIn 0.3s ease;
+        box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    footer {
+        margin-top: 40px;
+        padding: 15px;
+        text-align: center;
+        background: linear-gradient(135deg, #6a00ff, #ff00c8);
+        color: white;
+        border-radius: 8px;
+        box-shadow: 0px 5px 15px rgba(0,0,0,0.15);
+    }
+</style>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masakan Nusantara</title>
+
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif;}
+
+        body {background: #98c1ff; padding: 20px; color: #333;}
+
+        header {
+            background: linear-gradient(135deg, #ff4500, #ff7f00);
+            padding: 25px; text-align: center; color: white;
+            border-radius: 10px; margin-bottom: 25px;
+            font-size: 28px; font-weight: bold;
+        }
+
+        .container {max-width: 1200px; margin: auto;}
+
+        .search-box, .region-dropdown {
+            padding: 12px 15px; width: 100%;
+            border-radius: 8px; border: 1px solid #ccc;
+            margin-bottom: 15px; background: white; font-size: 15px;
+        }
+
+        .masakan-list {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; margin-top: 20px;
+        }
+
+        .masakan-item {
+            background: white; padding: 15px; border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer; transition: 0.25s ease;
+        }
+
+        .masakan-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.15);
+        }
+
+        .masakan-item img {
+            width: 100%; height: 200px; object-fit: cover;
+            border-radius: 10px; margin-bottom: 10px;
+        }
+
+        .detail {
+            display: none; margin-top: 12px; padding: 12px;
+            background: #fff6e9; border-left: 4px solid #ff7f00;
+            border-radius: 8px; animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {from {opacity: 0;} to {opacity: 1;}}
+
+        footer {
+            margin-top: 40px; padding: 15px;
+            text-align: center; background: #ff4500;
+            color: white; border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<header>🍽 Masakan Nusantara Lengkap</header>
+
+<div class="container">
+    <div class="masakan-list"></div>
+</div>
+
+<footer>© 2025 - Masakan Nusantara</footer>
+
+<script>
+const foods = [
+    {
+        name:"Rendang",
+        region:"Sumatera Barat",
+        img:"rendang.png",
+        desc:`
+        <b>Bahan:</b>
+        <ul>
+            <li>1 kg daging sapi</li>
+            <li>1 liter santan</li>
+            <li>Cabai merah, bawang merah, bawang putih</li>
+            <li>Lengkuas, jahe, serai, daun kunyit</li>
+            <li>Garam & gula secukupnya</li>
+        </ul>
+        <b>Cara Memasak:</b>
+        <ol>
+            <li>Haluskan bumbu lalu tumis hingga harum.</li>
+            <li>Masukkan daging, aduk hingga berubah warna.</li>
+            <li>Tambahkan santan lalu masak hingga mengental.</li>
+            <li>Masak 3–4 jam hingga berminyak dan coklat gelap.</li>
+        </ol>
+        `
+    },
+
+    {
+        name:"Pempek",
+        region:"Sumatera Selatan",
+        img:"pempek.jpg",
+        desc:`
+        <b>Bahan:</b>
+        <ul>
+            <li>500 gr ikan tenggiri</li>
+            <li>300 gr tepung tapioka</li>
+            <li>2 butir telur</li>
+            <li>Garam, gula, air es</li>
+        </ul>
+        <b>Cara Membuat:</b>
+        <ol>
+            <li>Haluskan ikan, campur dengan garam & sedikit air.</li>
+            <li>Tambahkan tapioka sedikit demi sedikit.</li>
+            <li>Bentuk sesuai jenis (lenjer, kapal selam).</li>
+            <li>Rebus hingga mengapung lalu goreng.</li>
+        </ol>
+        `
+    },
+
+    {
+        name:"Gudeg",
+        region:"Yogyakarta",
+        img:"gudeg.jpg",
+        desc:`
+        <b>Bahan:</b>
+        <ul>
+            <li>1 kg nangka muda</li>
+            <li>500 ml santan</li>
+            <li>Daun jati, gula merah</li>
+            <li>Bawang, kemiri, ketumbar</li>
+        </ul>
+        <b>Cara Memasak:</b>
+        <ol>
+            <li>Rebus nangka dengan daun jati hingga coklat.</li>
+            <li>Tumis bumbu halus dan masukkan ke dalam panci nangka.</li>
+            <li>Tambahkan santan & gula merah, masak 3–4 jam.</li>
+        </ol>
+        `
+    },
+
+    {
+        name:"Rawon",
+        region:"Jawa Timur",
+        img:"rawon.jpg",
+        desc:`
+        <b>Bahan:</b>
+        <ul>
+            <li>500 gr daging sapi</li>
+            <li>Kluwek, bawang merah, bawang putih</li>
+            <li>Ketumbar, jintan, lengkuas</li>
+        </ul>
+        <b>Cara Memasak:</b>
+        <ol>
+            <li>Rebus daging hingga empuk.</li>
+            <li>Tumis bumbu halus kluwek hingga harum.</li>
+            <li>Campurkan ke dalam kuah daging, masak hingga hitam pekat.</li>
+        </ol>
+        `
+    },
+
+    {
+        name:"Coto Makassar",
+        region:"Sulawesi Selatan",
+        img:"cotomakassar.jpg",
+        desc:`
+        <b>Bahan:</b>
+        <ul>
+            <li>500 gr daging sapi</li>
+            <li>Kacang tanah sangrai</li>
+            <li>Bawang merah, putih, jahe, lengkuas</li>
+        </ul>
+        <b>Cara Memasak:</b>
+        <ol>
+            <li>Rebus daging hingga lunak.</li>
+            <li>Haluskan bumbu dan kacang, tumis hingga harum.</li>
+            <li>Masukkan ke kuah rebusan daging.</li>
+        </ol>
+        `
+    },
+
+    {
+        name:"Sate Ayam Madura",
+        region:"Jawa Timur",
+        img:"satemadura.jpg",
+        desc:`
+        <b>Bahan:</b>
+        <ul>
+            <li>500 gr dada ayam</li>
+            <li>Bumbu kacang</li>
+            <li>Kecap manis & jeruk limau</li>
+        </ul>
+        <b>Cara Memasak:</b>
+        <ol>
+            <li>Potong dadu ayam lalu tusuk.</li>
+            <li>Bakar sambil oles kecap.</li>
+            <li>Siram bumbu kacang sebelum disajikan.</li>
+        </ol>
+        `
+    },
+
+    {
+        name:"Soto Betawi",
+        region:"DKI Jakarta",
+        img:"sotobetawi.jpg",
+        desc:`
+        <b>Bahan:</b>
+        <ul>
+            <li>500 gr daging sapi</li>
+            <li>Santan & susu</li>
+            <li>Serai, kayu manis, cengkih</li>
+        </ul>
+        <b>Cara Memasak:</b>
+        <ol>
+            <li>Rebus daging hingga empuk.</li>
+            <li>Tumis bumbu halus dan rempah.</li>
+            <li>Masukkan santan dan susu, masak hingga wangi.</li>
+        </ol>
+        `
+    },
+
+    {
+        name:"Ayam Betutu",
+        region:"Bali",
+        img:"ayambetutu.jpg",
+        desc:`
+        <b>Bahan:</b>
+        <ul>
+            <li>1 ekor ayam</li>
+            <li>Cabai rawit, bawang merah, putih</li>
+            <li>Kunyit, jahe, kemiri</li>
+        </ul>
+        <b>Cara Memasak:</b>
+        <ol>
+            <li>Lumuri ayam dengan bumbu halus.</li>
+            <li>Bungkus daun pisang.</li>
+            <li>Kukus atau panggang 2 jam.</li>
+        </ol>
+        `
+    },
+
+    {
+        name:"Papeda",
+        region:"Papua",
+        img:"papeda.jpg",
+        desc:`
+        <b>Bahan:</b>
+        <ul>
+            <li>Tepung sagu</li>
+            <li>Air panas</li>
+            <li>Ikan kuah kuning</li>
+        </ul>
+        <b>Cara Membuat:</b>
+        <ol>
+            <li>Tuang air panas ke sagu sambil diaduk hingga mengental.</li>
+            <li>Sajikan dengan kuah kuning.</li>
+        </ol>
+        `
+    }
+];
+
+const listContainer = document.querySelector(".masakan-list");
+
+const searchBox = document.createElement("input");
+searchBox.placeholder = "Cari makanan...";
+searchBox.className = "search-box";
+
+const dropdown = document.createElement("select");
+dropdown.className = "region-dropdown";
+
+function renderList(data) {
+    listContainer.innerHTML = "";
+    data.forEach((food, index) => {
+        const item = document.createElement("div");
+        item.className = "masakan-item";
+
+        item.innerHTML = `
+            <img src="${food.img}">
+            <h3>${food.name}</h3>
+            <p><b>${food.region}</b></p>
+            <div class="detail" id="detail-${index}">
+                ${food.desc}
+            </div>
+        `;
+
+        item.addEventListener("click", () => {
+            const detail = document.getElementById(`detail-${index}`);
+            detail.style.display = detail.style.display === "block" ? "none" : "block";
+        });
+
+        listContainer.appendChild(item);
+    });
+}
+
+function initDropdown() {
+    const regions = [...new Set(foods.map(f => f.region))];
+    dropdown.innerHTML = `<option value="all">Semua Daerah</option>`;
+    regions.forEach(r => dropdown.innerHTML += `<option value="${r}">${r}</option>`);
+}
+
+dropdown.addEventListener("change", () => {
+    dropdown.value === "all"
+        ? renderList(foods)
+        : renderList(foods.filter(f => f.region === dropdown.value));
+});
+
+searchBox.addEventListener("input", () => {
+    const keyword = searchBox.value.toLowerCase();
+    renderList(foods.filter(f => f.name.toLowerCase().includes(keyword)));
+});
+
+const container = document.querySelector(".container");
+container.prepend(dropdown);
+container.prepend(searchBox);
+
+initDropdown();
+renderList(foods);
+</script>
+
+</body>
+</html>
